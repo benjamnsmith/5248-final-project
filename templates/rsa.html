@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}
+RSA OVERVIEW
+{% endblock %}
+
+{% block header %}
+<nav margin-bottom="2rem">
+    <ul>
+        <li><a href="{{ url_for('rsa') }}">RSA</a></li>
+        <li><a href="{{ url_for('sslExample') }}">RSA Example - SSL</a></li>
+        <li><a href="{{ url_for('rsaAttack') }}">Attacking RSA</a></li>
+    </ul>
+</nav>
+<h2>RSA OVERVIEW</h2>
+{% endblock %}
+
+
+{% block content %}
+<script src="{{ url_for('static', filename='rsa.js') }}" defer></script>
+<div class="field">
+    <div class="text">
+        <h3>RSA key generation steps</h3>
+        <ol>
+            <li>Choose 2 distinct primes, $p$ and $q$</li>
+            <ul>
+                <li>$p = 1163$</li>
+                <li>$q = 149$</li>
+            </ul>
+            <li>Compute $n = pq$</li>
+            <ul>
+                <li>$n = pq = 1163(149) = 173287$</li>
+            </ul>
+            <li>Compute Carmichael Totient of n, λ(n)</li>
+            <ul>
+                <li>λ(173287) = lcm(p-1,q-1) = lcm(1162,148) = 85988</li>
+                <li>LCM can be computed using euclidean algorithm</li>
+            </ul>
+            <li>Choose a number e that is 1 &lt; e &lt;	85988 AND such that e is coprime with λ(n) = 85988 </li>
+            <ul>
+                <li>Let e = 173</li>
+                <li>e will be our Encryption exponent</li>
+            </ul>
+            <li>Compute the multiplicative inverse of e (mod λ(n)), ie. compute $173^{-1}$ modulo 85988. </li>
+            <ul>
+                <li>$173^{-1} = 36781 \pmod{85988}$</li>
+            </ul>
+            <li>We now have a public/private key pair:</li>
+            <ul>
+                <li>Public key: n, e</li>
+                <li>Private key: n, d</li>
+            </ul>
+            <li>We can encrypt a padded message $m$ as $m^e \% n$</li>
+            <ul>
+                <li>Let's encrypt the message "hi" (unicode)</li>
+                <li>Convert "hi" to binary: hi = 104 105 = 01101000 01101001 = 26729 </li>
+
+                <li>$c \equiv 26729^{173} \pmod{85988} \equiv 56369$</li>
+                <li>56369 = 11011100 00110001 = 220 49 = <span id="cryptex"></span></li>
+            </ul>
+
+            <li>We can decrypt a padded message c as c^d %n</li>
+            <ul>
+                <li>Let's decrypt 2860</li>
+                <li>2860 = 00001011 00101100</li>
+            </ul>
+        </ol>
+    </div>
+    <div class="interactive">
+        <h3>Interactive Math</h3>
+        <p>
+            Try it out :p<br>
+            Enter a two letter string below to see it get encrypted using these RSA keys.<br>
+            <strong>Question</strong>: why are we limited to only two letters?
+        </p>
+        <div>
+            <form>
+                <label>Plaintext: </label>
+                <input placeholder="hi" id="plaintext"></input>
+                <button>Go!</button>
+            </form>
+            <div class="interactive_results">
+                <p>
+                    <span id="results"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

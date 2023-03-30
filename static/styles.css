@@ -1,0 +1,87 @@
+:root {
+    --background-color: #e3e4e6;
+    --menu-items-main: #313131;
+    --menu-items-sub: #d2691e;
+    --text-color: 	#313131;
+} 
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-size: 1.3rem;
+}
+
+nav {
+    padding-left: 1.3rem;
+}
+
+.mono {
+    font-family: 'Courier New', Courier, monospace
+}
+
+.code {
+    font-family: 'Monaco';
+}
+
+a {
+    text-decoration: none;  
+}
+
+a:hover {
+    font-weight: bold;
+}
+
+nav > ul > li > a:hover {
+
+}
+
+nav > ul, nav > ul > li > ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+nav > ul > li > ul {
+    display: none;
+}
+nav > ul {
+    display: flex;
+}
+
+nav > ul > li > a {
+    color: var(--menu-items-main); 
+    margin: 1rem 2rem 3rem 4rem;
+    padding: 1rem;
+    background-color: #f7d0cb;
+    border: 2px solid var(--text-color);
+    border-radius: 25px;
+}
+
+nav > ul > ul > li > a {
+    color: var(--menu-items-sub); 
+    padding-left: 1rem;
+}
+
+.content{
+    padding: 3rem;
+}
+
+table, th, td {
+    border:1px solid red;
+}
+
+th, td {
+    padding: 10px;
+}
+
+.field {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.text {
+    grid-column: 1;
+}
+
+.interactive {
+    grid-column: 2;
+}
