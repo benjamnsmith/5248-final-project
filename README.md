@@ -3,7 +3,7 @@ Ben Smith smit9524@umn.edu
 
 ## Requirements
 * Python3
-* Flask (pip install flask)
+* Flask (`pip install flask`)
 
 ## To run
 From the root directory, `python3 app.py`. 
