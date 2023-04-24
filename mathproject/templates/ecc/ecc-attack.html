@@ -1,0 +1,28 @@
+{% extends 'base.html' %} 
+
+{% block title %}
+ECDH ATTACK
+{% endblock %}
+
+{% block submenu %}
+<nav>
+    <h3>ECC sub-topics</h3>
+    <ul>
+        <li><a href="{{ url_for('ecc.ecc') }}">ECC Diffie Hellman</a></li>
+        <li><a href="{{ url_for('ecc.eccdh') }}">ECDH Example - Signal</a></li>
+        <li><a href="{{ url_for('ecc.eccAttack') }}">Attacking ECDH</a></li>
+    </ul>
+</nav>
+<div class="line"></div>
+{% endblock %}
+
+{% block header %}
+<script src="{{ url_for('static', filename='rsa-attack.js') }}" defer></script>
+<h2>ECCDH ATTACK</h2>
+{% endblock %}
+
+{% block content %}
+<p>
+    Hello
+</p>
+{% endblock %}

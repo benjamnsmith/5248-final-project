@@ -1,1 +1,0 @@
-The RSA correctness proof is trivial and left as an exercise to the reader. 

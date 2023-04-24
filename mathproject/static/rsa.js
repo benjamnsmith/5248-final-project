@@ -1,7 +1,7 @@
 const s = document.getElementById("cryptex");
 
-let s1 = String.fromCharCode(220);
-let s2 = String.fromCharCode(49);
+let s1 = String.fromCharCode(157);
+let s2 = String.fromCharCode(242);
 
 s.innerText = s1 + s2;
 
@@ -27,7 +27,7 @@ function encrypt(st) {
 
     let e = v ** 173n;
 
-    let c = e % 85988n;
+    let c = e % 173287n;
 
     let b = c.toString(2);
 

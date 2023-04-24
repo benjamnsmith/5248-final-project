@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ECC OVERVIEW
+{% endblock %}
+
+{% block submenu %}
+<nav>
+    <h3>ECC sub-topics</h3>
+    <ul>
+        <li><a href="{{ url_for('ecc.ecc') }}">ECC Diffie Hellman</a></li>
+        <li><a href="{{ url_for('ecc.eccdh') }}">ECDH Example - Signal</a></li>
+        <li><a href="{{ url_for('ecc.eccAttack') }}">Attacking ECDH</a></li>
+    </ul>
+</nav>
+<div class="line"></div>
+{% endblock %}
+
+{% block header %}
+<h2>ECC OVERVIEW</h2>
+{% endblock %}
+
+
+{% block content %}
+<script src="{{ url_for('static', filename='rsa.js') }}" defer></script>
+<div class="field">
+    <div class="text">
+        <h3>Elliptic Curves and Finite Fields</h3>
+        <p>
+            In class we talked about how the basic idea behhind our cryptosystems is that we have two operations 
+            that are inverses of each other, one is easy to calculate (encrypting/decrypting messages) and one will 
+            be very difficult (determining the keys used in encryption/decryption).
+        </p>
+        <p>
+            Elliptic Curve Cryptography (ECC) builds on this by xyz. 
+        </p>
+        <p>
+            The basic idea behind is similar to "classic" Diffie Hellman where we need to compute a secret shared key over an insecure
+            channel. Similar to before, the security will depend on the ease of multiplying numbers, but the difficulty of factoring them. 
+            However, instead of operating over the set of integers $\mathbb{Z}$ (or, I guess a ring of integers $\mathbb{Z}_{n}$ when we 
+            use a modulus n), we will operate over a finite field $\mathbb{F}_{p}$. 
+        </p>
+        <p>
+            An elliptic curve $E$ is the set of solutions satisfying $$E : Y^2 = X^3 + AX + B$$ such that $4A^3 + 27B^2 \not= 0$. 
+            Solutions to an elliptic curve over a finite field $\mathbb{F}_{p}$ (where $p > 2$) are solutions to the equation that lie in the field
+            (integers less than $p$). 
+            We'll take this definition at face value... details on elliptic curves are not the focus of this project. 
+        </p>
+        <p>
+            We can add two points on the curve, $P_1$ and $P_2$, using an algorithm that can be found in Hoffstein, Pipher, and Silverman (page 285). 
+            Their sum, $P_3$, is also a point on the curve. Maybe you can see where this is going... It's easy for us to add two points $P_1$ and $P_2$,
+            but given a point on a curve $P_3$, it's difficult for us to calculate what other two points it decomposes into. In fact, the only way for us to do this
+            is to calculate all solutions to the curve in the field, and determine which two add to our known point.
+        </p>
+        
+    </div>
+    <div class="interactive">
+        <h3>Applying Elliptic Curves to Cryptography</h3>
+        <p>
+            In "normal" DH, our public information is a prime $p$ and a primitive root $g$. In ECDH, our public information is:
+            <ul>
+                <li>A large prime, $p$</li>
+                <li>An elliptic curve over a field $\mathbb{E}(\mathbb{F}_p)$</li>
+                <li>A point $P$ that lies in $\mathbb{E}(\mathbb{F}_p)$</li>
+            </ul>
+            For Alice and Bob to compute a public key, they will each choose a secret number, $n_A$ for Alice and $n_B$ for Bob.
+            Alice and Bob will both compute a <em>new</em> point, $Q_A$ and $Q_B$, such that $Q_A = n_A \cdot P$ and $Q_B = n_B \cdot P$.
+            They will then send these new points to each other. 
+        </p>
+    </div>
+</div>
+{% endblock %}

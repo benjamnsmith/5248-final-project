@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<h1>Post-Quantum Cryptography (whenever it comes)</h1>
+<nav>
+    <h3>Topics</h3>
+    <ul>
+        <li><a href="{{ url_for('pages.index') }}">Home</a></li>
+        <li><a href="{{ url_for('rsa.rsa') }}">RSA</a>
+        <ul>
+            <li><a href="{{ url_for('rsa.sslExample') }}">RSA Example - SSL</a></li>
+            <li><a href="{{ url_for('rsa.rsaAttack') }}">Attacking RSA</a></li>
+        </ul></li>
+        <li><a href="{{ url_for('ecc.ecc') }}">ECC</a>
+        <ul>
+            <li><a href="{{ url_for('ecc.eccdh') }}">ECC Example - Diffie Hellman</a></li>
+            <li><a href="{{ url_for('ecc.eccAttack') }}">Attacking ECC</a></li>
+        </ul></li>
+        <li><a href="{{ url_for('pages.reading') }}">Further Reading</a></li>
+      </ul>
+</nav>
+<div class="line"></div>
+{% block submenu %} {% endblock %}
+<section class="content">
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+    {% block content %}{% endblock %}
+</section>
+<script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+    </script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+
+<script>
+  function externalLinks() {   for(var c = document.getElementsByTagName("a"), a = 0;a < c.length;a++) {     var b = c[a];     b.getAttribute("href") && b.hostname !== location.hostname && (b.target = "blank")   } } ; externalLinks(); 
+    </script>

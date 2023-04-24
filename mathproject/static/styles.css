@@ -15,24 +15,30 @@ nav {
     padding-left: 1.3rem;
 }
 
+.submenu {
+    margin-bottom: 2rem;
+}
+
 .mono {
     font-family: 'Courier New', Courier, monospace
 }
 
 .code {
     font-family: 'Monaco';
+    font-size: 12pt;
 }
 
 a {
     text-decoration: none;  
+    target: "blank";
 }
 
 a:hover {
-    font-weight: bold;
+    text-decoration: underline;
 }
 
-nav > ul > li > a:hover {
-
+li > a:hover {
+    font-weight: bold;
 }
 
 nav > ul, nav > ul > li > ul {
@@ -61,12 +67,18 @@ nav > ul > ul > li > a {
     padding-left: 1rem;
 }
 
-.content{
+/* .content{
     padding: 3rem;
-}
+} */
 
 table, th, td {
     border:1px solid red;
+    word-wrap: break-word;
+}
+
+#ssl-table {
+    table-layout: fixed;
+    width: 100%;
 }
 
 th, td {
@@ -76,6 +88,9 @@ th, td {
 .field {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-gap: 3rem;
+    margin: 3rem;
+    padding: 1rem;
 }
 
 .text {
@@ -84,4 +99,40 @@ th, td {
 
 .interactive {
     grid-column: 2;
+}
+
+#p1res {
+    display: none;
+}
+
+.animation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 20%;
+}
+
+.classical {
+    border: 2px solid green;
+    grid-column: 1;
+    padding: 5%;
+}
+
+.quantum {
+    border: 2px solid orange;
+    grid-column: 2;
+    padding: 5%;
+}
+
+.col2 {
+    padding-left: 5rem;
+}
+
+img {
+    border: 2px solid black;
+}
+
+.line {
+    margin: 2rem 0;
+    height: 2px;
+    background: var(--text-color);
 }

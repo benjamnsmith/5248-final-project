@@ -1,8 +1,20 @@
 const keygen_button = document.getElementById("priv-key");
-const res_area = document.getElementById("res");
+const res_area = document.getElementById("col2");
 const ciphertext_res = document.getElementById("ciphertext")
 const steps = document.getElementById("steps");
-const pt_form = document.querySelector("form");
+const step3button = document.querySelector("#trigger-3");
+const step2 = document.querySelector("#step2");
+const step3 = document.querySelector("#step3");
+
+step2.style.display = "none";
+step3.style.display = "none";
+res_area.style.display = "none";
+
+/* TODO:
+*  Setup server to encrypt datatgram
+*  Find a datagram
+*  Show encrypted datagram
+*/
 let data;
 
 const assoc = {
@@ -18,10 +30,9 @@ const assoc = {
 
 }
 
-if(pt_form) {
-    pt_form.addEventListener("submit", (e) => {
+if(step3button) {
+    step3button.addEventListener("click", (e) => {
         e.preventDefault();
-        let text = document.getElementById("plaintext").value;
         getEncryption(text, displayCipherText);
     })
 }
@@ -48,17 +59,23 @@ function generateTable(table, data) {
       text = document.createTextNode(data[element]);
       cell.appendChild(text);
     }
+
+    res_area.style.width = "100%";
   }
 
 function displayCipherText(c){
+    step3.style.display = "list-item";
     ciphertext_res.innerHTML += `${c}`
 }
 
 function displayData(data) {
     let dat = JSON.parse(data)
     let t = document.querySelector("table");
+    res_area.style.display = "block";
 
-    generateTable(t, dat)
+    generateTable(t, dat);
+
+    step2.style.display = "list-item";
 }
 
 function getData(callback) {
@@ -68,11 +85,12 @@ function getData(callback) {
         callback(request.response);
         }
     };
-    request.open("POST", "/keygen");
+    request.open("POST", "/rsa/keygen");
     request.send();
 }
 
 function getEncryption(url, callback){
+    url = "https://" + url;
     fetch(url).then(function(response) {
         return response;
       }).then(callback(data))

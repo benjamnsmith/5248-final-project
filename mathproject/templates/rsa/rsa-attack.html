@@ -1,0 +1,133 @@
+{% extends 'base.html' %} 
+
+{% block title %}
+RSA ATTACK
+{% endblock %}
+
+{% block submenu %}
+<nav>
+    <h3>RSA sub-topics</h3>
+    <ul>
+        <li><a href="{{ url_for('rsa.rsa') }}">RSA</a></li>
+        <li><a href="{{ url_for('rsa.sslExample') }}">RSA Example - SSL</a></li>
+        <li><a href="{{ url_for('rsa.rsaAttack') }}">Attacking RSA</a></li>
+    </ul>
+</nav>
+<div class="line"></div>
+{% endblock %}
+
+{% block header %}
+<script src="{{ url_for('static', filename='rsa-attack.js') }}" defer></script>
+<h2>RSA ATTACK</h2>
+{% endblock %}
+
+{% block content %}
+<div class="field">
+    <div class="col1">
+        <p>
+            RSA is only as secure as the numbers chosen are large. As we know, the secuirty of RSA depends 
+            on the difficulty of fatoring large primes. Before discussion of quantum computing (below), we will 
+            discuss methods for attacking RSA using classical computers. 
+        </p>
+        <br>
+        <p>
+            I have encrypted the rest of the page using RSA. Let's figure out what I'm hiding...
+        </p>
+        <p>
+            Here are the contents of the public key file:
+            <br><br>
+            <span class="mono">
+                -----BEGIN PUBLIC KEY-----<br>
+                MDwwDQYJKoZIhvcNAQEBBQADKwAwKAIhANrdDdhzUHCHfFEnCIKLmIcHj0ZZEVVD<br>
+                M7L3KG1EXjFFAgMBAAE=<br>
+                -----END PUBLIC KEY-----
+            </span>
+        </p>
+        <p>
+            First, we need to figure out what we're working with. SSL encodes its RSA values using PEM, 
+            then encodes PEM using Base64, which is what we see above. Decoding the base 64 gives us:<br>
+            <span class="mono">
+                [bits] => 256<br>
+                [rsa] => Array<br>
+                (<br>
+                    [n] => dadd0dd8735070877c512708828b9887078f465911554333b2f<br>7286d445e3145<br>
+                    [e] => 010001<br>
+                )<br>
+            </span>
+            A quick note about key sizing: I used 256 bits (the minimum OpenSSL would allow me). IBM says that the following keysizes should be used:
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Security Level</th>
+                        <th>Bits</th>
+                    </tr>
+                    <tr>
+                        <td>Low</td>
+                        <td>512</td>
+                    </tr>
+                    <tr>
+                        <td>Medium</td>
+                        <td>1024</td>
+                    </tr>
+                    <tr>
+                        <td>High</td>
+                        <td>2048</td>
+                    </tr>
+                    <tr>
+                        <td>Uber secure </td>
+                        <td>4096</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+        </p>
+        <p>
+            <span class=mono>n = dadd0dd8735070877c512708828b9887078f465911554333b2f728<br>6d445e3145</span> is a pretty big number. In fact, it is:<br>
+            98,994,769,750,663,088,444,638,443,860,066,085,464,244,046,600,910,710,754,358,<br>494,081,803,259,621,701<br>
+            which is about $9.8 \cdot 10^{76}$ (remember: key size = 256 bits, max representable integer: $2^{256} = 1.2 \cdot 10^{77}$).
+        </p>
+        <p>
+            Can we crack our lower-than-low RSA key? Can a quantum computer? Let's look.<br>
+            Each machine will perform a square root attack on the RSA key. The classical machine is shown making computations on the left, 
+            and the quantum machine on the right. 
+        </p>
+    </div>
+    
+    <div class="col2">
+        <p>
+            Remember - for the square root attack, we are looking for integers $a$ and $b$ such that $a^2 \equiv b^2 \pmod{n}$.<br>
+            Our classical computer will run the general 
+            A classical computer can factor a given number in about $e^{cd^{\frac{1}{3}}}$ seconds where $d$ is the number of digits of the number.
+            A quantum computer reduces this greatly: it can factor a given number in $cd^{3}$ seconds. <br>
+            Thus, our 256-bit key will generate a number with about 77 digits.<br>
+            Classical computer: $e^{c \cdot 77^{\frac{1}{3}}}$ computations  $\propto e^{4.25} \approx 70$ computations<br>
+            Quantum computer: $c \cdot 77^{3} \propto 77^3$ computations = $2.3 \cdot 10^{11}$years.
+        </p>
+        <img src="{{ url_for('static', filename='shor-figure.png') }}" width="80%"/>
+        <form>
+            <label>Classical Computer</label>
+            <select id="factoring_alg">
+                <option>General Number Field Sieve</option>
+                <option>Quadratic Sieve</option>
+            </select>
+            <br>
+            <label>Quantum Computer</label>
+            <select>
+                <option>Shor's Algorithm</option>
+            </select>
+            <br>
+            <button>Run</button>
+        </form>
+        <div class="animation">
+            <div class="classical">
+
+            </div>
+            <div class="quantum">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

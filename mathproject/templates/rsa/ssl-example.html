@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}
+RSA EXAMPLE - SSL
+{% endblock %}
+
+{% block submenu %}
+<nav>
+    <h3>RSA sub-topics</h3>
+    <ul>
+        <li><a href="{{ url_for('rsa.rsa') }}">RSA</a></li>
+        <li><a href="{{ url_for('rsa.sslExample') }}">RSA Example - SSL</a></li>
+        <li><a href="{{ url_for('rsa.rsaAttack') }}">Attacking RSA</a></li>
+    </ul>
+</nav>
+<div class="line"></div>
+{% endblock %}
+
+{% block header %}
+<h2>RSA EXAMPLE - SSL</h2>
+<script src="{{ url_for('static', filename='ssl.js') }}" defer></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="field">
+    <div id="col1">
+        <p>
+            SSL/TLS is how we encrypt data on the transport layer (OSI model) of network transfers.<br>
+            We use RSA-based SSL/TLS certificates. <br>
+            We can generate these certificates using a program called OpenSSL. 
+        </p>
+        <p>
+            OpenSSL will generate real, valid RSA key pairs to be used in certifcate signing. <br>
+            I made the keys as short as allowable, but it wouldn't let me make a key with less than 256 bits in the modulus
+        </p>
+        <p>
+            Encryption: $m^e \pmod{n}$<br>
+            Decryption: $c^d \pmod{n}$
+        </p>
+        <ol id="steps">
+            <li>
+                    <button id="priv-key">Generate SSL Keys (OpenSSL)</button>
+            </li>
+            <br>
+            <li id="step2">
+                <div>
+                        <p>Ok, we've got our SSL keys, let's encrypt something. SSL is used to encrypt data across a network, so let's encrypt a website. 
+                            More specifically, we'll encrypt an IP datagram packet. This is what really happens when you make a request for a website!
+                        </p>
+                        <p>
+                            Here's an IP datagram I grabbed with Wireshark:
+                        </p>
+                        <span class="mono">
+                            DATAGRAM WOO
+                        </span>
+                        <p>
+                            OpenSSL will encrypt it for us, we can just run <span class="code">openssl rsautl -encrypt</span> with appropriate flags set for our key.
+                            I set the server up to do this operation dynamically (it's already done it). If you refresh the page, you can generate new keys and encrypt this packet with those
+                            keys to get a new ciphertext. Please don't generate too many keys. 
+                        </p>
+                        <button id="trigger-3">Next step</button>
+                </div>
+            </li>
+            <br>
+            <li id="step3">
+                <p>Here's our encrypted text:</p>
+                <div id="ciphertext">
+        
+                </div>
+            </li>
+        </ol>
+    </div>
+    
+    <div id="col2">
+        <h3>SSL Key Components</h3>
+        <table id="ssl-table">
+            <tr>
+                <th>Component</th>
+                <th>Value</th>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+
+{% endblock %}

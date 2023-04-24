@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}
+HOME
+{% endblock %}
+
+{% block header %}
+<h2>HOME</h2>
+{% endblock %}
+
+{% block content %} 
+<div class="field">
+    <div class="col1">
+        <p>
+            This is my MATH5248 final project. We are going to dive into two comonly used internet encryption schemes, RSA and Diffie Hellman ECC, 
+            to learn about how they work, and what impact quantum computing will have on their security.
+        </p>
+        <p>
+            It may be worth going over a bit about the history (and future) of quantum computing. Let's do that now.
+            Classical computers operate on bits, which can be either on (1) or off (0). Quantum computers, on the other hand,
+            use qubits. However, their state can not be represented as an integer, but instead as a vector representing the potential
+            states it could decompose into. So, a qubit can be a 1, a 0, or (most commonly) a vector. See the image to the right for a visualization. 
+            We are limited in classical machines by the speed at which we can do base 2 math (Boolean algebra), but in quantum machines we are able 
+            to do a bit more complex math by instead doing math across these vectors.
+        </p>
+        <p>
+            Quantum computing thus introduces a whole new set of basic operators (logic gates) then on classical machines, and indeed encompass
+            a completely new field of math than classical machines. In the coming pages, we are going to examine two different cryptosystems, 
+            RSA and Elliptic Curve Cryptography Diffie Hellman (ECCDH). We will examine how they are used in practice today, as well as the challenges
+            posed to them by both classical and quantum computing. 
+        </p>
+        <p>
+            I am not a physicist, but widespread quantum computing of the magnitude that could pose a threat to our cryptosystems
+            as they exist currently is not in the near future. We can barely factor $21 = 7 \cdot 3$ using a quantum computer, let alone a number with
+            100s of digits. The largest number successfully factored on a classical computer had 232 digits, and our security relies on numbers that have 
+            $2^{2048}$ (or more) bits, which is about 620 digits.  
+        </p>
+        <h3>Shor's Algorithm</h3>
+        <p>
+            This is the algorithm that's generating all the "buzz" about quantum computing breaking cryptography. In theory, Shor's 
+            algorithm can factor 
+        </p>
+    </div>
+
+    <div class="col2">
+        <p>
+            The site is laid out as follows (use the navbar on top to navigate):
+            <ul>
+                <li>
+                    Index (here)
+                </li>
+                <li>
+                    RSA
+                    <ul>
+                        <li>
+                            RSA Overview
+                        </li>
+                        <li>
+                            RSA Example - SSL/TLS
+                        </li>
+                        <li>
+                            Attacking RSA
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    ECC
+                    <ul>
+                        <li>
+                            ECC Overview
+                        </li>
+                        <li>
+                            ECC Example - ECCDH
+                        </li>
+                        <li>
+                            Attacking ECCDH
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Further reading
+                </li>
+            </ul>
+        </p>
+        <img src="{{ url_for('static', filename='bit-vs-qubit.png') }}" width="90%"/>
+        <br>
+        <caption>src: <a href="https://cheapsslsecurity.com/blog/quantum-computing-vs-encryption-a-battle-to-watch-out-for/">cheapssl security</a></caption>
+    </div>
+</div>
+
+
+{% endblock %}

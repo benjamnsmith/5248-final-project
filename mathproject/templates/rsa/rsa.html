@@ -4,14 +4,19 @@
 RSA OVERVIEW
 {% endblock %}
 
-{% block header %}
-<nav margin-bottom="2rem">
+{% block submenu %}
+<nav>
+    <h3>RSA sub-topics</h3>
     <ul>
-        <li><a href="{{ url_for('rsa') }}">RSA</a></li>
-        <li><a href="{{ url_for('sslExample') }}">RSA Example - SSL</a></li>
-        <li><a href="{{ url_for('rsaAttack') }}">Attacking RSA</a></li>
+        <li><a href="{{ url_for('rsa.rsa') }}">RSA</a></li>
+        <li><a href="{{ url_for('rsa.sslExample') }}">RSA Example - SSL</a></li>
+        <li><a href="{{ url_for('rsa.rsaAttack') }}">Attacking RSA</a></li>
     </ul>
 </nav>
+<div class="line"></div>
+{% endblock %}
+
+{% block header %}
 <h2>RSA OVERVIEW</h2>
 {% endblock %}
 
@@ -31,19 +36,18 @@ RSA OVERVIEW
             <ul>
                 <li>$n = pq = 1163(149) = 173287$</li>
             </ul>
-            <li>Compute Carmichael Totient of n, λ(n)</li>
+            <li>Compute toteint of n, $\phi(n)$</li>
             <ul>
-                <li>λ(173287) = lcm(p-1,q-1) = lcm(1162,148) = 85988</li>
-                <li>LCM can be computed using euclidean algorithm</li>
+                <li>$\phi(173287) = 171976$</li>
             </ul>
-            <li>Choose a number e that is 1 &lt; e &lt;	85988 AND such that e is coprime with λ(n) = 85988 </li>
+            <li>Choose a number $e$ that is $1 < e < 85988$ AND such that $e$ is coprime with $\phi(n) = 173287$ </li>
             <ul>
-                <li>Let e = 173</li>
-                <li>e will be our Encryption exponent</li>
+                <li>Let $e = 173$</li>
+                <li>$e$ will be our Encryption exponent</li>
             </ul>
-            <li>Compute the multiplicative inverse of e (mod λ(n)), ie. compute $173^{-1}$ modulo 85988. </li>
+            <li>Compute the multiplicative inverse of e (mod $\phi(n)$), ie. compute $173^{-1}$ modulo 173287. </li>
             <ul>
-                <li>$173^{-1} = 36781 \pmod{85988}$</li>
+                <li>$d = 173^{-1} = 44073 \pmod{173287}$</li>
             </ul>
             <li>We now have a public/private key pair:</li>
             <ul>
@@ -55,14 +59,9 @@ RSA OVERVIEW
                 <li>Let's encrypt the message "hi" (unicode)</li>
                 <li>Convert "hi" to binary: hi = 104 105 = 01101000 01101001 = 26729 </li>
 
-                <li>$c \equiv 26729^{173} \pmod{85988} \equiv 56369$</li>
-                <li>56369 = 11011100 00110001 = 220 49 = <span id="cryptex"></span></li>
-            </ul>
-
-            <li>We can decrypt a padded message c as c^d %n</li>
-            <ul>
-                <li>Let's decrypt 2860</li>
-                <li>2860 = 00001011 00101100</li>
+                <li>$c \equiv 26729^{173} \pmod{173287} \equiv 40434$</li>
+                <li>40434 = 10011101 11110010 = 157 242 = <span id="cryptex"></span></li>
+                
             </ul>
         </ol>
     </div>
@@ -85,6 +84,9 @@ RSA OVERVIEW
                 </p>
             </div>
         </div>
+        <p>
+            Maybe I will add a decrypter here as well!
+        </p>
     </div>
 </div>
 {% endblock %}

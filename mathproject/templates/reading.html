@@ -1,0 +1,29 @@
+{% extends 'base.html' %} 
+
+
+{% block title %}
+FURTHER READING
+{% endblock %}
+
+{% block header %} 
+<h2>FURTHER READING</h2>
+{% endblock %}
+
+{% block content %} 
+<p>
+    I would call this a bibliography, but that would be pushing it. At worst I skimmed these and they
+    informed this site, or they just seemed interesting.
+</p>
+<ul>
+    <li>This paper on remote timing attacks on SSL - <a href="http://crypto.stanford.edu/~dabo/papers/ssl-timing.pdf">[LINK]</a></li>
+    <li>This is Signal's documentation describing triple Diffie Hellman - <a href="https://www.signal.org/docs/specifications/x3dh/">[LINK]</a></li>
+    <li>The NSA incorporated a cryptographic backdoor into at least one ECC pseudo-random number generator?!</li>
+    <ul>
+        <li>Here's some information from when it was first found - <a href="https://www.wired.com/images_blogs/threatlevel/2013/09/15-shumow.pdf">[LINK]</a></li>
+        <li>Here's an NYT article from 2013 confirming everything presented above (in 2007) after the Edward Snowden leaks - <a href="https://www.nytimes.com/2013/09/06/us/nsa-foils-much-internet-encryption.html">[LINK]</a></li>
+    </ul>
+</ul>
+<p>
+    I am using MathJax to render the Tex. Flask backend and js front. 
+</p>
+{% endblock %}
