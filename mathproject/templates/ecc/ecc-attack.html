@@ -5,24 +5,109 @@ ECDH ATTACK
 {% endblock %}
 
 {% block submenu %}
-<nav>
-    <h3>ECC sub-topics</h3>
-    <ul>
-        <li><a href="{{ url_for('ecc.ecc') }}">ECC Diffie Hellman</a></li>
-        <li><a href="{{ url_for('ecc.eccdh') }}">ECDH Example - Signal</a></li>
-        <li><a href="{{ url_for('ecc.eccAttack') }}">Attacking ECDH</a></li>
-    </ul>
-</nav>
-<div class="line"></div>
+<div class="topper">
+    <nav>
+        <h3>ECC sub-topics</h3>
+        <ul>
+            <li><a href="{{ url_for('ecc.ecc') }}">ECC Overview</a></li>
+            <li><a href="{{ url_for('ecc.eccdh') }}">ECC Example - AES</a></li>
+            <li><a href="{{ url_for('ecc.eccAttack') }}">Attacking ECDH</a></li>
+        </ul>
+    </nav>
+</div>
 {% endblock %}
 
 {% block header %}
-<script src="{{ url_for('static', filename='rsa-attack.js') }}" defer></script>
-<h2>ECCDH ATTACK</h2>
+<script src="{{ url_for('static', filename='ecc-attack.js') }}" defer></script>
+<h2>ECDH ATTACK</h2>
 {% endblock %}
 
 {% block content %}
-<p>
-    Hello
-</p>
+<div class="field">
+    <div class="text box">
+        <h3>ECDLP and Pollard's $p$-method</h3>
+        <p>
+            Our friend the Discrete Log Problem that we know so well to be the difficulty of solving Diffie Hellman
+            translates into ECC as well. We can add some new letters and call it the Elliptic Curve Discrete Logarithm Problem (ECDLP). 
+            That is, <strong>given a point $Q$ (which is a point on $E$, an elliptic curve, over $\mathbb{F}_q)$, can we find $I$ and $P$ such that $Q=IP$?</strong>
+            This is essentially the integer factorization problem, but over a new set of integers. 
+        </p>
+        <p>
+            The best known algorithm to solve the ECDLP is Pollard's $p$-method. This is a general integer factorization algorithm that we
+            can apply to elliptic curves. Over $\mathbb{Z}^+$, here is the way it works, given an input number $n$:
+            <ol>
+                <li>
+                    Select a bound, $B$
+                </li>
+                <li>
+                    Calculate $M = \displaystyle \prod_{q < B} q^{\left \lfloor{\textrm{log}_q}B \right \rfloor}$, where $q < B$ are all primes less than $B$. 
+                </li>
+                <li>
+                    Set $a=2$ (we choose $a$ coprime to $n$, if $n$ is odd, we can always set $a=2$).
+                </li>
+                <li>
+                    Calculate $g = \gcd(a^M - 1,n)$. <br>
+                    If $1 < g < n$, then $g$ is a prime factor of $n$.<br>
+                    If $g = 1$, select a larger $B$ and try again.<br>
+                    If $g = n$, select a smaller $B$ and try again.<br>
+                </li>
+            </ol>
+        </p>
+        <p>
+            So, what about elliptic curves? There are a variety of optimizations to Pollard's method outside of the scope of this project,
+            (and outside the scope of my comprehension). The general running time of Pollard's method is approximately $\sqrt{\pi n/2}$, but this
+            can be decreased up to $\frac{\sqrt{\pi n}}{2 \sqrt{m}}$, where $m$ is a power of 2 such that the map of points on the curves in $\mathbb{F}_2$ is 
+            an endomorphism on $E(\mathbb{F}_{2^m})$. Like I said, this is a bit beyond my comprehension. However, this optimization of Pollard's method has been effectively used to 
+            solve real-world ECC challenges. 
+        </p>
+    </div>
+    <div class="interactive box">
+        <h3>Fun with Pollard</h3>
+        <p>
+            Here's an example. Let's factor $173 \cdot 71 = 12283$. <br>
+            ATTEMPT $1$
+            <ol>
+                <li>
+                    We'll start with $B = 5$.
+                </li>
+                <li>
+                    $M = 2^2 \cdot 3^1 \cdot 5^1 = 60$
+                </li>
+                <li>
+                    $a = 2$
+                </li>
+                <li>
+                    $\gcd(2^{60} - 1, 12283) = 1$. <br>Our $B$ values was too small, so let's increase it. 
+                </li>
+            </ol>
+            ATTEMPT $2$
+            <ol>
+                <li>
+                    Now, $B = 7$ (we choose a value for $B$ that has more prime factors than the previous value)
+                </li>
+                <li>
+                    $M = 2^2 \cdot 3^1 \cdot 5^1 \cdot 7^1 = 420$
+                </li>
+                <li>
+                    $a = 2$
+                </li>
+                <li>
+                    $\gcd(2^{420} - 1, 12283) = 71$
+                </li>
+            </ol>
+            We have successfully factored $12283$ using Pollard's $p$-method. 
+        </p>
+        <p>
+            I implemented the algorithm in Python, and we can test it out below. Input an (odd) number into the box below, and we will
+            factor it using Pollard's $p$-method. 
+        </p>
+        <form>
+            <label>Input a number with two prime factors:</label><br>
+            <input placeholder="12283" id="val"></input>
+            <button>Factor it!</button>
+        </form>
+    </div>
+</div>
+
+
 {% endblock %}

@@ -5,15 +5,16 @@ RSA ATTACK
 {% endblock %}
 
 {% block submenu %}
-<nav>
-    <h3>RSA sub-topics</h3>
-    <ul>
-        <li><a href="{{ url_for('rsa.rsa') }}">RSA</a></li>
-        <li><a href="{{ url_for('rsa.sslExample') }}">RSA Example - SSL</a></li>
-        <li><a href="{{ url_for('rsa.rsaAttack') }}">Attacking RSA</a></li>
-    </ul>
-</nav>
-<div class="line"></div>
+    <div class="topper">
+        <nav>
+            <h3>RSA sub-topics</h3>
+            <ul>
+                <li><a href="{{ url_for('rsa.rsa') }}">RSA Overview</a></li>
+                <li><a href="{{ url_for('rsa.sslExample') }}">RSA Example - SSL</a></li>
+                <li><a href="{{ url_for('rsa.rsaAttack') }}">Attacking RSA</a></li>
+            </ul>
+        </nav>
+    </div>
 {% endblock %}
 
 {% block header %}
@@ -23,109 +24,61 @@ RSA ATTACK
 
 {% block content %}
 <div class="field">
-    <div class="col1">
+    <div class="box" id="col1">
+        <h3>Shor's Algorithm, generally</h3>
         <p>
-            RSA is only as secure as the numbers chosen are large. As we know, the secuirty of RSA depends 
-            on the difficulty of fatoring large primes. Before discussion of quantum computing (below), we will 
-            discuss methods for attacking RSA using classical computers. 
-        </p>
-        <br>
-        <p>
-            I have encrypted the rest of the page using RSA. Let's figure out what I'm hiding...
-        </p>
-        <p>
-            Here are the contents of the public key file:
-            <br><br>
-            <span class="mono">
-                -----BEGIN PUBLIC KEY-----<br>
-                MDwwDQYJKoZIhvcNAQEBBQADKwAwKAIhANrdDdhzUHCHfFEnCIKLmIcHj0ZZEVVD<br>
-                M7L3KG1EXjFFAgMBAAE=<br>
-                -----END PUBLIC KEY-----
-            </span>
+            This algorithm proposed by Peter Shor (in the 90s!) describes a way to factor large numbers much more efficiently on a quantum machine than classical. 
+            The idea is that we can use the order of a modular exponent function to begin to factor numbers.<br>
+            For example, to factor a large $N = pq$, where $p$ and $q$ are primes, we choose integers $a$ such that $2 < a < N-1$. We calculate two values:
+            <ul>
+                <li>$\gcd(a,N)$ - if this is not 1, it should be $p$ or $q$ and we are done.</li>
+                <li>$r =$ order($a$) modulo $N$ - if it's odd, we choose a new a. If it's even, we continue.</li>
+            </ul>
+            Once we have found $a$ with an even order modulo $N$, we can use the identity: 
+            $$a^r - 1 = (a^{\frac{r}{2}} - 1)(a^{\frac{r}{2}} + 1)$$
+            From this, we know that $a^{\frac{r}{2}} - 1$ is not a factor of N (otherwise the order of a would be $\frac{r}{2}$, because $a^r \equiv 1 \pmod{N}$)
+            This is possible only if $p$ is a prime factor of $a^{\frac{r}{2}} - 1$  and $q$  is a prime factor of $a^{\frac{r}{2}} + 1$, or vice versa. 
+            It's easy to find $p$ and $q$ now -- we can just calculate $\gcd(N, a^{\frac{r}{2}} \pm 1 )$. <br>
+            This will NOT work when $N | (a^{\frac{r}{2}} + 1)$. So we just pick a new $a$ and start the process over. 
         </p>
         <p>
-            First, we need to figure out what we're working with. SSL encodes its RSA values using PEM, 
-            then encodes PEM using Base64, which is what we see above. Decoding the base 64 gives us:<br>
-            <span class="mono">
-                [bits] => 256<br>
-                [rsa] => Array<br>
-                (<br>
-                    [n] => dadd0dd8735070877c512708828b9887078f465911554333b2f<br>7286d445e3145<br>
-                    [e] => 010001<br>
-                )<br>
-            </span>
-            A quick note about key sizing: I used 256 bits (the minimum OpenSSL would allow me). IBM says that the following keysizes should be used:
-            <table>
-                <tbody>
-                    <tr>
-                        <th>Security Level</th>
-                        <th>Bits</th>
-                    </tr>
-                    <tr>
-                        <td>Low</td>
-                        <td>512</td>
-                    </tr>
-                    <tr>
-                        <td>Medium</td>
-                        <td>1024</td>
-                    </tr>
-                    <tr>
-                        <td>High</td>
-                        <td>2048</td>
-                    </tr>
-                    <tr>
-                        <td>Uber secure </td>
-                        <td>4096</td>
-                    </tr>
-                </tbody>
-            </table>
-            <br>
-        </p>
-        <p>
-            <span class=mono>n = dadd0dd8735070877c512708828b9887078f465911554333b2f728<br>6d445e3145</span> is a pretty big number. In fact, it is:<br>
-            98,994,769,750,663,088,444,638,443,860,066,085,464,244,046,600,910,710,754,358,<br>494,081,803,259,621,701<br>
-            which is about $9.8 \cdot 10^{76}$ (remember: key size = 256 bits, max representable integer: $2^{256} = 1.2 \cdot 10^{77}$).
-        </p>
-        <p>
-            Can we crack our lower-than-low RSA key? Can a quantum computer? Let's look.<br>
-            Each machine will perform a square root attack on the RSA key. The classical machine is shown making computations on the left, 
-            and the quantum machine on the right. 
+            We can factor large numbers in this way, and quantum computers have the potential to be pretty good at finding the order of a number modulo another. I won't get into 
+            more details than this, we have a lot more material to dive into. But when we talk about Shor's algorithm, this is what is going on, underneath the hood. 
         </p>
     </div>
     
-    <div class="col2">
-        <p>
-            Remember - for the square root attack, we are looking for integers $a$ and $b$ such that $a^2 \equiv b^2 \pmod{n}$.<br>
-            Our classical computer will run the general 
-            A classical computer can factor a given number in about $e^{cd^{\frac{1}{3}}}$ seconds where $d$ is the number of digits of the number.
-            A quantum computer reduces this greatly: it can factor a given number in $cd^{3}$ seconds. <br>
-            Thus, our 256-bit key will generate a number with about 77 digits.<br>
-            Classical computer: $e^{c \cdot 77^{\frac{1}{3}}}$ computations  $\propto e^{4.25} \approx 70$ computations<br>
-            Quantum computer: $c \cdot 77^{3} \propto 77^3$ computations = $2.3 \cdot 10^{11}$years.
-        </p>
+    <div class="box" id="col2">
+        <h3>Visualizing Shor's Algorithm</h3>
         <img src="{{ url_for('static', filename='shor-figure.png') }}" width="80%"/>
-        <form>
-            <label>Classical Computer</label>
-            <select id="factoring_alg">
-                <option>General Number Field Sieve</option>
-                <option>Quadratic Sieve</option>
-            </select>
-            <br>
-            <label>Quantum Computer</label>
-            <select>
-                <option>Shor's Algorithm</option>
-            </select>
-            <br>
-            <button>Run</button>
-        </form>
         <div class="animation">
+            <form class="alg_entry">
+                <label>Classical Computer</label>
+                <select id="factoring_alg">
+                    <option>General Number Field Sieve</option>
+                    <option>Quadratic Sieve</option>
+                </select>
+                <br>
+                <label>Quantum Computer</label>
+                <select>
+                    <option>Shor's Algorithm</option>
+                </select>
+                <br>
+                <button>Run</button>
+            </form>
+        
             <div class="classical">
-
+                <div id="count_c"></div>
             </div>
             <div class="quantum">
-
-            </div>
+                <div id="count_q"></div>
+            </div> 
+            <span id="running_note"></span>
         </div>
+        
+        <p>
+            Sometimes the classical algorithm will beat Shor's algorithm -- it really depends on the numbers chosen. However, a stable running version of 
+            Shor will almost always beat the sieves. This is an animation only showing the (accurate!) speed difference between the algorithms for large numbers. 
+        </p>
     </div>
 </div>
 

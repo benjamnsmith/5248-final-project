@@ -10,10 +10,12 @@ HOME
 
 {% block content %} 
 <div class="field">
-    <div class="col1">
+    <div class="col1 box">
         <p>
-            This is my MATH5248 final project. We are going to dive into two comonly used internet encryption schemes, RSA and Diffie Hellman ECC, 
-            to learn about how they work, and what impact quantum computing will have on their security.
+            This is my MATH5248 final project. We are going to dive into two comonly used internet encryption schemes, RSA and Elliptic Curve Diffie Hellman, 
+            to learn about how they work in practice, and what impact quantum computing will have on their security. This project is aimed at other MATH5248 students
+            who are interested in seeing the applications of therorems and cryptosystems we learned throughout the semester, as well as their relevance in 
+            a post-quantum cryptograhic future. 
         </p>
         <p>
             It may be worth going over a bit about the history (and future) of quantum computing. Let's do that now.
@@ -35,14 +37,9 @@ HOME
             100s of digits. The largest number successfully factored on a classical computer had 232 digits, and our security relies on numbers that have 
             $2^{2048}$ (or more) bits, which is about 620 digits.  
         </p>
-        <h3>Shor's Algorithm</h3>
-        <p>
-            This is the algorithm that's generating all the "buzz" about quantum computing breaking cryptography. In theory, Shor's 
-            algorithm can factor 
-        </p>
     </div>
 
-    <div class="col2">
+    <div class="col2 box">
         <p>
             The site is laid out as follows (use the navbar on top to navigate):
             <ul>
@@ -85,6 +82,28 @@ HOME
         <img src="{{ url_for('static', filename='bit-vs-qubit.png') }}" width="90%"/>
         <br>
         <caption>src: <a href="https://cheapsslsecurity.com/blog/quantum-computing-vs-encryption-a-battle-to-watch-out-for/">cheapssl security</a></caption>
+    </div>
+    <div class="spanner box">
+        <h3>Shor's Algorithm, generally</h3>
+        <p>
+            This algorithm proposed by Peter Shor (in the 90s!) describes a way to factor large numbers much more efficiently on a quantum machine than classical. 
+            The idea is that we can use the order of a modular exponent function to begin to factor numbers.<br>
+            For example, to factor a large $N = pq$, where $p$ and $q$ are primes, we choose integers $a$ such that $2 < a < N-1$. We calculate two values:
+            <ul>
+                <li>$\gcd(a,N)$ - if this is not 1, it should be $p$ or $q$ and we are done.</li>
+                <li>$r =$ order($a$) modulo $N$ - if it's odd, we choose a new a. If it's even, we continue.</li>
+            </ul>
+            Once we have found $a$ with an even order modulo $N$, we can use the identity: 
+            $$a^r - 1 = (a^{\frac{r}{2}} - 1)(a^{\frac{r}{2}} + 1)$$
+            From this, we know that $a^{\frac{r}{2}} - 1$ is not a factor of N (otherwise the order of a would be $\frac{r}{2}$, because $a^r \equiv 1 \pmod{N}$)
+            This is possible only if $p$ is a prime factor of $a^{\frac{r}{2}} - 1$  and $q$  is a prime factor of $a^{\frac{r}{2}} + 1$, or vice versa. 
+            It's easy to find $p$ and $q$ now -- we can just calculate $\gcd(N, a^{\frac{r}{2}} \pm 1 )$. <br>
+            This will NOT work when $N | (a^{\frac{r}{2}} + 1)$. So we just pick a new $a$ and start the process over. 
+        </p>
+        <p>
+            We can factor large numbers in this way, and quantum computers have the potential to be pretty good at finding the order of a number modulo another. I won't get into 
+            more details than this, we have a lot more material to dive into. But when we talk about Shor's algorithm, this is what is going on, underneath the hood. 
+        </p>
     </div>
 </div>
 

@@ -5,15 +5,16 @@ ECC OVERVIEW
 {% endblock %}
 
 {% block submenu %}
-<nav>
-    <h3>ECC sub-topics</h3>
-    <ul>
-        <li><a href="{{ url_for('ecc.ecc') }}">ECC Diffie Hellman</a></li>
-        <li><a href="{{ url_for('ecc.eccdh') }}">ECDH Example - Signal</a></li>
-        <li><a href="{{ url_for('ecc.eccAttack') }}">Attacking ECDH</a></li>
-    </ul>
-</nav>
-<div class="line"></div>
+<div class="topper">
+    <nav>
+        <h3>ECC sub-topics</h3>
+        <ul>
+            <li><a href="{{ url_for('ecc.ecc') }}">ECC Overview</a></li>
+            <li><a href="{{ url_for('ecc.eccdh') }}">ECC Example - AES</a></li>
+            <li><a href="{{ url_for('ecc.eccAttack') }}">Attacking ECDH</a></li>
+        </ul>
+    </nav>
+</div>
 {% endblock %}
 
 {% block header %}
@@ -24,7 +25,7 @@ ECC OVERVIEW
 {% block content %}
 <script src="{{ url_for('static', filename='rsa.js') }}" defer></script>
 <div class="field">
-    <div class="text">
+    <div class="text box">
         <h3>Elliptic Curves and Finite Fields</h3>
         <p>
             In class we talked about how the basic idea behhind our cryptosystems is that we have two operations 
@@ -41,20 +42,27 @@ ECC OVERVIEW
             use a modulus n), we will operate over a finite field $\mathbb{F}_{p}$. 
         </p>
         <p>
-            An elliptic curve $E$ is the set of solutions satisfying $$E : Y^2 = X^3 + AX + B$$ such that $4A^3 + 27B^2 \not= 0$. 
+            An elliptic curve $E$ is the set of solutions satisfying $$E : y^2 = x^3 + ax + b$$ such that $4A^3 + 27B^2 \not= 0$. 
             Solutions to an elliptic curve over a finite field $\mathbb{F}_{p}$ (where $p > 2$) are solutions to the equation that lie in the field
-            (integers less than $p$). 
-            We'll take this definition at face value... details on elliptic curves are not the focus of this project. 
+            (integers less than $p$).  
         </p>
         <p>
-            We can add two points on the curve, $P_1$ and $P_2$, using an algorithm that can be found in Hoffstein, Pipher, and Silverman (page 285). 
+            Consider the curve $E : Y^2 = X^3 + AX + B$, with points $P_1 = (x_1, y_1)$ and $P_2 = (x_2, y_2)$ on E. We can compute $P_1 + P_2$ as follows:
+            <div>
+                <p>
+                    For these points such that $x_1 \not= x_2$ and $y_1 \not= -y_2$ and $P_1 \not= P_2$**:<br>
+                    $P_1 + P_2 = (x_3, y_3)$ such that:<br>
+                    $x_3 = \lambda^2 - x_1 - x_2$ and $y_3 = \lambda(x_1 - x_3) - y_1$, where<br>
+                    $\lambda = \frac{y_2 - y_1}{x_2 - x_1}$
+                </p>
+            </div> 
             Their sum, $P_3$, is also a point on the curve. Maybe you can see where this is going... It's easy for us to add two points $P_1$ and $P_2$,
             but given a point on a curve $P_3$, it's difficult for us to calculate what other two points it decomposes into. In fact, the only way for us to do this
             is to calculate all solutions to the curve in the field, and determine which two add to our known point.
         </p>
         
     </div>
-    <div class="interactive">
+    <div class="interactive box">
         <h3>Applying Elliptic Curves to Cryptography</h3>
         <p>
             In "normal" DH, our public information is a prime $p$ and a primitive root $g$. In ECDH, our public information is:
@@ -65,7 +73,23 @@ ECC OVERVIEW
             </ul>
             For Alice and Bob to compute a public key, they will each choose a secret number, $n_A$ for Alice and $n_B$ for Bob.
             Alice and Bob will both compute a <em>new</em> point, $Q_A$ and $Q_B$, such that $Q_A = n_A \cdot P$ and $Q_B = n_B \cdot P$.
-            They will then send these new points to each other. 
+            They will then send these new points to each other. Then, they will each multiply the point they received by their secret number. We can see that
+            they will computer the same values:
+            $$n_A \cdot Q_B = n_A \cdot n_B \cdot P = n_b \cdot Q_A$$
+            We can see that this is pretty similar to vanilla DH. <br>
+            Because we are talking about practical implementations of the theory behind the cryptosystems, in practice we will only use the $x$ value of the shared
+            secret as the key. Why? We don't need two keys, $x$ and $y$, and we can obtain all of the information that we need to encrypt/decrypt from just the $x$ value. 
+            On the next page with the AES example, we will see an ECDH key exchange, but the secret points and key calculated will be only a single value (represented in hex) 
+            which is the x-value of the points Alice and Bob run their computations on. 
+        </p>
+        <p>
+            Consider:
+            <ul>
+                <li>$p = 3851$</li>
+                <li>$E : Y^2 = X^3 + 324X + 1287$</li>
+                <li>$P = (920,303) \in E(\mathbb{F}_{3851})$</li>
+            </ul>
+            Alice and Bob choose numbers 
         </p>
     </div>
 </div>

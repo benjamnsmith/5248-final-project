@@ -5,65 +5,45 @@ ECC EXAMPLE - SIGNAL
 {% endblock %}
 
 {% block submenu %}
-<nav>
-    <h3>ECC sub-topics</h3>
-    <ul>
-        <li><a href="{{ url_for('ecc.ecc') }}">ECC Diffie Hellman</a></li>
-        <li><a href="{{ url_for('ecc.eccdh') }}">ECDH Example - Signal</a></li>
-        <li><a href="{{ url_for('ecc.eccAttack') }}">Attacking ECDH</a></li>
-    </ul>
-</nav>
-<div class="line"></div>
+<div class="topper">
+    <nav>
+        <h3>ECC sub-topics</h3>
+        <ul>
+            <li><a href="{{ url_for('ecc.ecc') }}">ECC Overview</a></li>
+            <li><a href="{{ url_for('ecc.eccdh') }}">ECC Example - AES</a></li>
+            <li><a href="{{ url_for('ecc.eccAttack') }}">Attacking ECDH</a></li>
+        </ul>
+    </nav>
+</div>
+
 {% endblock %}
 
 {% block header %}
-<h2>Signal Protocol</h2>
+<h2>AES with Elliptic Curves</h2>
 {% endblock %}
 
 
 {% block content %}
-<script src="{{ url_for('static', filename='rsa.js') }}" defer></script>
+<script src="{{ url_for('static', filename='ecc-dh.js') }}" defer></script>
 <div class="field">
-    <div class="text">
-        <h3>Messaging Encryption - Signal Protocol</h3>
+    <div class="text box">
+        <h3>Messaging Encryption - AES and Elliptic Curves</h3>
         <p>
-            Let's learn about how signal works. It uses EC Diffie Hellman! Well, a version of it. It uses <em>triple</em> DH. 
+            Let's learn about how AES works. It's the advanced encryption standard, developed in the late 90s, and still used today.  
+            Once a key is established using ECDH, we can use this key to encrypt our data using AES.
         </p>
         <p>
-            For Alice to communicate her message to Bob, everyone will need a variety of public keys. Each of these has a corresponding private key,
-            but as we know, if we can encrypt, we can decrypt, so we'll focus on encryption.
+            AES is a block cipher, <em>round-based</em>, encryption scheme. This means that it will split our plaintext into blocks, and perform 
+            operations on these blocks in rounds. We will examine each round of AES below. 
         </p>
-        <ol>
-            <li>$IK_A$ - Alice's identity key</li>
-            <li>$EK_A$ - Alice's ephemeral key</li>
-            <li>$IK_B$ - Bob's identity key</li>
-            <li>$SPK_B$ - Bobs's (signed) prekey</li>
-            <li>$OPK_A$ - Bob's one-time prekey</li>
-        </ol>
-       
         
     </div>
-    <div class="interactive">
+    <div class="interactive box">
         <h3>Interactive Math</h3>
         <p>
-            Try it out :p<br>
-            Enter a two letter string below to see it get encrypted using these RSA keys.<br>
-            <strong>Question</strong>: why are we limited to only two letters?
-        </p>
-        <div>
-            <form>
-                <label>Plaintext: </label>
-                <input placeholder="hi" id="plaintext"></input>
-                <button>Go!</button>
-            </form>
-            <div class="interactive_results">
-                <p>
-                    <span id="results"></span>
-                </p>
-            </div>
-        </div>
-        <p>
-            Maybe I will add a decrypter here as well!
+            Let's encrypt using AES! We'll use ECDH to exchange keys, and then encrypt and decrypt messages. <br>
+            <button id="key-trigger">Begin ECDH key exchange</button><br>
+            <span id="key-area"></span>
         </p>
     </div>
 </div>

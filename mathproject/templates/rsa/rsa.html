@@ -5,15 +5,17 @@ RSA OVERVIEW
 {% endblock %}
 
 {% block submenu %}
-<nav>
-    <h3>RSA sub-topics</h3>
-    <ul>
-        <li><a href="{{ url_for('rsa.rsa') }}">RSA</a></li>
-        <li><a href="{{ url_for('rsa.sslExample') }}">RSA Example - SSL</a></li>
-        <li><a href="{{ url_for('rsa.rsaAttack') }}">Attacking RSA</a></li>
-    </ul>
-</nav>
-<div class="line"></div>
+<div class="topper">
+    <nav>
+        <h3>RSA sub-topics</h3>
+        <ul>
+            <li><a href="{{ url_for('rsa.rsa') }}">RSA Overview</a></li>
+            <li><a href="{{ url_for('rsa.sslExample') }}">RSA Example - SSL</a></li>
+            <li><a href="{{ url_for('rsa.rsaAttack') }}">Attacking RSA</a></li>
+        </ul>
+    </nav>
+</div>
+
 {% endblock %}
 
 {% block header %}
@@ -24,8 +26,11 @@ RSA OVERVIEW
 {% block content %}
 <script src="{{ url_for('static', filename='rsa.js') }}" defer></script>
 <div class="field">
-    <div class="text">
+    <div class="text box">
         <h3>RSA key generation steps</h3>
+        <p>
+            We've seen this before, so I'll just go over the steps again as a quick refresh. 
+        </p>
         <ol>
             <li>Choose 2 distinct primes, $p$ and $q$</li>
             <ul>
@@ -65,12 +70,12 @@ RSA OVERVIEW
             </ul>
         </ol>
     </div>
-    <div class="interactive">
+    <div class="interactive box">
         <h3>Interactive Math</h3>
         <p>
             Try it out :p<br>
             Enter a two letter string below to see it get encrypted using these RSA keys.<br>
-            <strong>Question</strong>: why are we limited to only two letters?
+            
         </p>
         <div>
             <form>
@@ -83,10 +88,17 @@ RSA OVERVIEW
                     <span id="results"></span>
                 </p>
             </div>
+            <p>
+                <strong>Food for thought</strong>: why are we limited to only two letters in this example?
+                <br>
+                <br>
+                <em>Hint</em>: how does the way we encode characters have an impact on the underlying cryptographic math? Was it a good 
+                or bad idea to use the Unicode encoding in this example?
+                <br>
+                <br>
+                I used unicode so I didn't have to write my own encoding function, and javascript has a integer $\leftrightarrow$ character built in function
+            </p>
         </div>
-        <p>
-            Maybe I will add a decrypter here as well!
-        </p>
     </div>
 </div>
 {% endblock %}

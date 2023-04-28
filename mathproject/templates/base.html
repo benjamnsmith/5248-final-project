@@ -2,25 +2,30 @@
 <title>{% block title %}{% endblock %}</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-<h1>Post-Quantum Cryptography (whenever it comes)</h1>
-<nav>
-    <h3>Topics</h3>
-    <ul>
-        <li><a href="{{ url_for('pages.index') }}">Home</a></li>
-        <li><a href="{{ url_for('rsa.rsa') }}">RSA</a>
-        <ul>
-            <li><a href="{{ url_for('rsa.sslExample') }}">RSA Example - SSL</a></li>
-            <li><a href="{{ url_for('rsa.rsaAttack') }}">Attacking RSA</a></li>
-        </ul></li>
-        <li><a href="{{ url_for('ecc.ecc') }}">ECC</a>
-        <ul>
-            <li><a href="{{ url_for('ecc.eccdh') }}">ECC Example - Diffie Hellman</a></li>
-            <li><a href="{{ url_for('ecc.eccAttack') }}">Attacking ECC</a></li>
-        </ul></li>
-        <li><a href="{{ url_for('pages.reading') }}">Further Reading</a></li>
-      </ul>
-</nav>
-<div class="line"></div>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ysabeau:wght@300&display=swap" rel="stylesheet">
+<div class="topper">
+  <h1>Practical Cryptography: Implementing Theory and Visualizing Quantum Attacks</h1>
+  <nav>
+      <h3>Topics</h3>
+      <ul>
+          <li><a href="{{ url_for('pages.index') }}">Home</a></li>
+          <li><a href="{{ url_for('rsa.rsa') }}">RSA</a>
+          <ul>
+              <li><a href="{{ url_for('rsa.sslExample') }}">RSA Example - SSL</a></li>
+              <li><a href="{{ url_for('rsa.rsaAttack') }}">Attacking RSA</a></li>
+          </ul></li>
+          <li><a href="{{ url_for('ecc.ecc') }}">ECC</a>
+          <ul>
+              <li><a href="{{ url_for('ecc.eccdh') }}">ECC Example - Diffie Hellman</a></li>
+              <li><a href="{{ url_for('ecc.eccAttack') }}">Attacking ECC</a></li>
+          </ul></li>
+          <li><a href="{{ url_for('pages.reading') }}">Further Reading</a></li>
+        </ul>
+  </nav>
+</div>
+
 {% block submenu %} {% endblock %}
 <section class="content">
     <header>
