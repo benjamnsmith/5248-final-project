@@ -6,7 +6,7 @@ import json
 
 bp = Blueprint('rsa', __name__, url_prefix="/rsa")
 
-dbg = True
+dbg = False
 keysize = 256
 hash = ""
 
@@ -32,30 +32,23 @@ def keygen():
 
     if not dbg:
         hash = md5(str(datetime.now()).encode()).hexdigest()
-        subprocess.call(shlex.split("openssl genrsa -out keys/generated-keys/private-key-{}.pem {}".format(hash, keysize)))
-        subprocess.call(shlex.split("openssl rsa -in keys/generated-keys/private-key-{}.pem  -pubout -out keys/generated-keys/public-key-{}.pem".format(hash, hash)))
-        dat = subprocess.run(shlex.split("openssl rsa -in keys/generated-keys/private-key-{}.pem -noout -text".format(hash)), capture_output=True, text=True).stdout
+        print("Generating private key {}".format(hash))
+        subprocess.call(shlex.split("openssl genrsa -out mathproject/generated-keys/private-key-{}.pem {}".format(hash, keysize)))
+        print("Generating public key {}".format(hash))
+        subprocess.call(shlex.split("openssl rsa -in mathproject/generated-keys/private-key-{}.pem  -pubout -out mathproject/generated-keys/public-key-{}.pem".format(hash, hash)))
+        dat = subprocess.run(shlex.split("openssl rsa -in mathproject/generated-keys/private-key-{}.pem -noout -text".format(hash)), capture_output=True, text=True).stdout
     else:
         hash = "1e12369365ae3c9992b808d1defd80b3"
-        dat = subprocess.run(shlex.split("openssl rsa -in keys/generated-keys/private-key-{}.pem -noout -text".format(hash)), capture_output=True, text=True).stdout
+        dat = subprocess.run(shlex.split("openssl rsa -in mathproject/generated-keys/private-key-{}.pem -noout -text".format(hash)), capture_output=True, text=True).stdout
         
-        #subprocess.call(shlex.split("openssl rsautl -encrypt -inkey keys/public-key.pem -pubin -in keys/plain.txt -out keys/{}-enc.txt".format(hash)))
-
     return json.dumps(fix(dat.split()), separators=(',', ':'))
 
 @bp.route('/rsa-encrypt', methods=["POST"])
 def rsaEncrypt():
     global hash
-    if not dbg:
-        pass
-    else:
-        txt = request.form["plaintext"]
-        with open("{}-plain.txt".format(hash), "w") as fil:
-            fil.write(txt)
-            fil.close()
-        
-        dat = subprocess.run(shlex.split("openssl rsautl -encrypt -inkey public-key-{}.pem -pubin -in {}-plain.txt -out {}-enc.txt".format(hash, hash, hash)), capture_output=True, text=True).stdout
-    return 
+    
+    dat = subprocess.run(shlex.split("openssl rsautl -encrypt -inkey mathproject/generate-keys/public-key-{}.pem -pubin -in packet.txt -out packet-{}-enc.txt".format(hash, hash)), capture_output=True, text=True).stdout
+    return dat
 
 
 def fix(lst):
