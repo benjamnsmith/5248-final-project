@@ -3,3 +3,4 @@ venv/
 __pycache__
 instance/
 .DS_Store
+generated-keys/
