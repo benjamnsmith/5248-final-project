@@ -3,49 +3,76 @@ const alg = document.querySelector("#factoring_alg");
 const btn = document.querySelector("button");
 const quantum_section = document.querySelector(".quantum");
 const classical_section = document.querySelector(".classical");
+const note = document.querySelector("#running_note");
+var count_q = document.querySelector("#count_q");
+var count_c = document.querySelector("#count_c");
 
 var shor = 1;
 var classical = 1;
+var shor_factor = 2;
 const MAX = 1000;
+var chosen_alg = ""
 
 
 function update() {
 
-    var count_c = document.querySelector("#count_c");
-    var count_q = document.querySelector("#count_q");
+    shor += shor_factor;
+    classical += 2;
 
-    shor *= 2;
-    classical += 1;
+    count_c.style.width = String(classical/10) + "%";
+    count_q.style.width = String(shor/10) + "%";
 
-    count_c.innerText = classical ;
-    count_q.innerText = shor ;
-
+    if (Math.floor(Math.random() * MAX) == classical){
+        count_c.style.width = "100%";
+        alert(`${chosen_alg} factored it first!`);
+        resetAnimation();
+        return
+    }
+    if (Math.floor(Math.random() * MAX) < MAX/4){
+        shor_factor += 1;
+        console.log("increasing shor factor")
+    }
     if (shor >= MAX) {
-        alert("Done")
+        count_q.style.width = "100%";
+        alert("Shor's algorithm factored it first!")
+        resetAnimation();
+    } else if (classical >= MAX){
+        count_c.style.width = "100%";
+        alert(`${chosen_alg} factored it first!`)
         resetAnimation();
     } else {
-        setTimeout(update, 500);
+        setTimeout(update, 100);
     }
 }
 
-function runAnimation(chosen_alg) {
+function runAnimation(alg) {
     btn.disabled = true;
+
+    chosen_alg = alg
 
     const c = 0.2190422;
 
-    classical_section.innerHTML = `<p>${chosen_alg} computations</p><span id="count_c"></span>`;
-    quantum_section.innerHTML = `<p>Shor's Algorithm computations</p><span id="count_q"></span>`;
+    count_q.style.backgroundColor = "orange";
+    count_q.innerText = "Shor's Algorithm"
+    count_c.style.backgroundColor = "green";
+    count_c.innerText = `${chosen_alg}`;
 
-    setTimeout(update, 1000);
+    note.innerText = "Now factoring dadd0dd8735070877c512708828b9887078f465911554333b2f7286d445e3145...";
+
+    setTimeout(update, 500);
 }
 
 
 function resetAnimation() {
-    btn.disabled = false;
-    classical_section.innerText = "";
-    quantum_section.innerText = "";
+    
     shor = 1;
     classical = 1;
+    note.innerText = "";
+    count_q.innerText = "";
+    count_c.innerText = "";
+    count_q.style.width = 0;
+    count_c.style.width = 0;
+    btn.disabled = false;
 }
 
 frm.addEventListener("submit", (e) => {

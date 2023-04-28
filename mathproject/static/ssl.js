@@ -18,14 +18,14 @@ res_area.style.display = "none";
 let data;
 
 const assoc = {
-    "modulus": "Modulus (n)",
-    "publicExponent": "Public exponent (e)",
-    "privateExponent": "Private Exponent (d)",
-    "prime1": "Prime 1 (p)",
-    "prime2": "Prime 2 (q)",
-    "exponent1": "d modulo p-1",
-    "exponent2": "d modulo q-1",
-    "coefficient": "Inverse of q modulo p",
+    "modulus": "Modulus ($n$)",
+    "publicExponent": "Public exponent ($e$)",
+    "privateExponent": "Private Exponent ($d$)",
+    "prime1": "Prime 1 ($p$)",
+    "prime2": "Prime 2 ($q$)",
+    "exponent1": "$d \\text{ modulo } p-1$",
+    "exponent2": "$d \\text{ modulo } q-1$",
+    "coefficient": "$q^{-1}$ modulo $p$",
     "Private-Key": "Modulus bits"
 
 }
@@ -33,7 +33,7 @@ const assoc = {
 if(step3button) {
     step3button.addEventListener("click", (e) => {
         e.preventDefault();
-        getEncryption(text, displayCipherText);
+        getEncryption(displayCipherText);
     })
 }
 
@@ -46,7 +46,6 @@ if (keygen_button){
 }
 
 function generateTable(table, data) {
-    data = data
     let keys = Object.keys(data)
 
     for (let element of keys) {
@@ -61,6 +60,7 @@ function generateTable(table, data) {
     }
 
     res_area.style.width = "100%";
+    MathJax.typeset()
   }
 
 function displayCipherText(c){
@@ -89,12 +89,13 @@ function getData(callback) {
     request.send();
 }
 
-function getEncryption(url, callback){
-    url = "https://" + url;
-    fetch(url).then(function(response) {
-        return response;
-      }).then(callback(data))
-      .catch(function(err) {
-        console.log('Fetch Error :-S', err);
-      });
+function getEncryption(callback) {
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = () => {
+        if (request.readyState === 4) {
+        callback(request.response);
+        }
+    };
+    request.open("POST", "/rsa/rsa-encrypt");
+    request.send();
 }
