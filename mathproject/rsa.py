@@ -7,7 +7,7 @@ import json
 bp = Blueprint('rsa', __name__, url_prefix="/rsa")
 
 dbg = False
-keysize = 256
+keysize = 512
 hash = ""
 
 
@@ -33,13 +33,13 @@ def keygen():
     if not dbg:
         hash = md5(str(datetime.now()).encode()).hexdigest()
         print("Generating private key {}".format(hash))
-        subprocess.call(shlex.split("openssl genrsa -out mathproject/generated-keys/private-key-{}.pem {}".format(hash, keysize)))
+        subprocess.call(shlex.split("openssl genrsa -out generated-keys/private-key-{}.pem {}".format(hash, keysize)))
         print("Generating public key {}".format(hash))
-        subprocess.call(shlex.split("openssl rsa -in mathproject/generated-keys/private-key-{}.pem  -pubout -out mathproject/generated-keys/public-key-{}.pem".format(hash, hash)))
-        dat = subprocess.run(shlex.split("openssl rsa -in mathproject/generated-keys/private-key-{}.pem -noout -text".format(hash)), capture_output=True, text=True).stdout
+        subprocess.call(shlex.split("openssl rsa -in generated-keys/private-key-{}.pem  -pubout -out generated-keys/public-key-{}.pem".format(hash, hash)))
+        dat = subprocess.run(shlex.split("openssl rsa -in generated-keys/private-key-{}.pem -noout -text".format(hash)), capture_output=True, text=True).stdout
     else:
         hash = "1e12369365ae3c9992b808d1defd80b3"
-        dat = subprocess.run(shlex.split("openssl rsa -in mathproject/generated-keys/private-key-{}.pem -noout -text".format(hash)), capture_output=True, text=True).stdout
+        dat = subprocess.run(shlex.split("openssl rsa -in generated-keys/private-key-{}.pem -noout -text".format(hash)), capture_output=True, text=True).stdout
         
     return json.dumps(fix(dat.split()), separators=(',', ':'))
 
@@ -47,7 +47,7 @@ def keygen():
 def rsaEncrypt():
     global hash
     
-    dat = subprocess.run(shlex.split("openssl rsautl -encrypt -inkey mathproject/generate-keys/public-key-{}.pem -pubin -in packet.txt -out packet-{}-enc.txt".format(hash, hash)), capture_output=True, text=True).stdout
+    dat = subprocess.run(shlex.split("openssl rsautl -encrypt -inkey generated-keys/public-key-{}.pem -pubin -in packet.txt -out encrypted-{}.txt".format(hash, hash)), capture_output=True, text=True).stdout
     return dat
 
 

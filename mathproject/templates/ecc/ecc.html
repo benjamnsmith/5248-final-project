@@ -89,7 +89,12 @@ ECC OVERVIEW
                 <li>$E : Y^2 = X^3 + 324X + 1287$</li>
                 <li>$P = (920,303) \in E(\mathbb{F}_{3851})$</li>
             </ul>
-            Alice and Bob choose numbers 
+            Alice and Bob choose numbers $n_A = 1194$ and $n_B = 1759$. <br>
+            Alice computes $Q_A = 1194P = (2067, 2178)$ and Bob computes $Q_B = 1759P = (3684,3125)$.<br>
+            Alice and Bob exchange their points, Q, and compute new points. <br>
+            Alice computes $n_AQ_B = 1194(3684, 3125) = (3346, 1242)$<br>
+            Bob computes $n_BQ_A = 1759(2067, 2178) = (3347, 1242)$<br>
+            Alice and Bob now have the same shared secret, and their symmetric key will be the x-value of the point they both computed. 
         </p>
     </div>
 </div>

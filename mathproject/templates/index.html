@@ -28,7 +28,7 @@ HOME
         <p>
             Quantum computing thus introduces a whole new set of basic operators (logic gates) then on classical machines, and indeed encompass
             a completely new field of math than classical machines. In the coming pages, we are going to examine two different cryptosystems, 
-            RSA and Elliptic Curve Cryptography Diffie Hellman (ECCDH). We will examine how they are used in practice today, as well as the challenges
+            RSA and Elliptic Curve Diffie Hellman (ECDH). We will examine how they are used in practice today, as well as the challenges
             posed to them by both classical and quantum computing. 
         </p>
         <p>
@@ -67,10 +67,10 @@ HOME
                             ECC Overview
                         </li>
                         <li>
-                            ECC Example - ECCDH
+                            ECC Example - ECDH/AES
                         </li>
                         <li>
-                            Attacking ECCDH
+                            Attacking ECDH
                         </li>
                     </ul>
                 </li>
@@ -82,28 +82,6 @@ HOME
         <img src="{{ url_for('static', filename='bit-vs-qubit.png') }}" width="90%"/>
         <br>
         <caption>src: <a href="https://cheapsslsecurity.com/blog/quantum-computing-vs-encryption-a-battle-to-watch-out-for/">cheapssl security</a></caption>
-    </div>
-    <div class="spanner box">
-        <h3>Shor's Algorithm, generally</h3>
-        <p>
-            This algorithm proposed by Peter Shor (in the 90s!) describes a way to factor large numbers much more efficiently on a quantum machine than classical. 
-            The idea is that we can use the order of a modular exponent function to begin to factor numbers.<br>
-            For example, to factor a large $N = pq$, where $p$ and $q$ are primes, we choose integers $a$ such that $2 < a < N-1$. We calculate two values:
-            <ul>
-                <li>$\gcd(a,N)$ - if this is not 1, it should be $p$ or $q$ and we are done.</li>
-                <li>$r =$ order($a$) modulo $N$ - if it's odd, we choose a new a. If it's even, we continue.</li>
-            </ul>
-            Once we have found $a$ with an even order modulo $N$, we can use the identity: 
-            $$a^r - 1 = (a^{\frac{r}{2}} - 1)(a^{\frac{r}{2}} + 1)$$
-            From this, we know that $a^{\frac{r}{2}} - 1$ is not a factor of N (otherwise the order of a would be $\frac{r}{2}$, because $a^r \equiv 1 \pmod{N}$)
-            This is possible only if $p$ is a prime factor of $a^{\frac{r}{2}} - 1$  and $q$  is a prime factor of $a^{\frac{r}{2}} + 1$, or vice versa. 
-            It's easy to find $p$ and $q$ now -- we can just calculate $\gcd(N, a^{\frac{r}{2}} \pm 1 )$. <br>
-            This will NOT work when $N | (a^{\frac{r}{2}} + 1)$. So we just pick a new $a$ and start the process over. 
-        </p>
-        <p>
-            We can factor large numbers in this way, and quantum computers have the potential to be pretty good at finding the order of a number modulo another. I won't get into 
-            more details than this, we have a lot more material to dive into. But when we talk about Shor's algorithm, this is what is going on, underneath the hood. 
-        </p>
     </div>
 </div>
 

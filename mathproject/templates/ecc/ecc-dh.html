@@ -25,7 +25,6 @@ ECC EXAMPLE - SIGNAL
 
 {% block content %}
 <script src="{{ url_for('static', filename='ecc-dh.js') }}" defer></script>
-<div class="field">
     <div class="text box">
         <h3>Messaging Encryption - AES and Elliptic Curves</h3>
         <p>
@@ -34,17 +33,40 @@ ECC EXAMPLE - SIGNAL
         </p>
         <p>
             AES is a block cipher, <em>round-based</em>, encryption scheme. This means that it will split our plaintext into blocks, and perform 
-            operations on these blocks in rounds. We will examine each round of AES below. 
+            operations on these blocks in rounds. 
         </p>
-        
-    </div>
-    <div class="interactive box">
-        <h3>Interactive Math</h3>
         <p>
-            Let's encrypt using AES! We'll use ECDH to exchange keys, and then encrypt and decrypt messages. <br>
-            <button id="key-trigger">Begin ECDH key exchange</button><br>
-            <span id="key-area"></span>
+            For a 128 bit key, we will perform 10 rounds, and for a 256 bit key, we perform 14 rounds. 
+            Each round is composed of the following stages:
+            <ul>
+                <li>Substitution</li>
+                <li>Row shifting</li>
+                <li>Column mixing</li>
+                <li>Encryption (more)</li>
+            </ul>
+            Each round requires its own key, which can be derived from the "main" key using the AES key schedule, a fixed table. The plaintext is split
+            into blocks, which are treated as a 4x4 matrix. The last round does not perform any final encryption. 
+        </p>
+        <h4>AES Round $n$</h4>
+        <p>
+            <ul>
+                <li>
+                    Substitution - each byte of the plaintext is substituted for another byte based on a pre-determined table.
+                </li>
+                <li>
+                    Row shifting - the first row is not shifted. The second row is shifted once to the left, the third row twice, and the fourth row thrice. 
+                </li>
+                <li>
+                    Column mixing - each column of the newly shifted matrix is multiplied by a set matrix to yield a new column. 
+                </li>
+                <li>
+                    More encryption - the new block is encrypted again using the round $n$ key. 
+                </li>
+                
+            </ul>
+            After this, the next round begins. <br>
+            We are not going to see here the details of AES because it's a bit too much to implement visually. But we will practice ECDH, and attack it in the next section. 
         </p>
     </div>
-</div>
+        
 {% endblock %}

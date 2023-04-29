@@ -57,8 +57,6 @@ function runAnimation(alg) {
     count_c.style.backgroundColor = "green";
     count_c.innerText = `${chosen_alg}`;
 
-    note.innerText = "Now factoring dadd0dd8735070877c512708828b9887078f465911554333b2f7286d445e3145...";
-
     setTimeout(update, 500);
 }
 

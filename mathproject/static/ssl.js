@@ -33,7 +33,7 @@ const assoc = {
 if(step3button) {
     step3button.addEventListener("click", (e) => {
         e.preventDefault();
-        getEncryption(displayCipherText);
+        displayCipherText();
     })
 }
 
@@ -65,7 +65,6 @@ function generateTable(table, data) {
 
 function displayCipherText(c){
     step3.style.display = "list-item";
-    ciphertext_res.innerHTML += `${c}`
 }
 
 function displayData(data) {

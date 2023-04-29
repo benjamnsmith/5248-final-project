@@ -65,23 +65,22 @@ RSA EXAMPLE - SSL
                             
                         </span>
                         <p>
-                            OpenSSL will encrypt it for us, we can just run <span class="code">openssl rsautl -encrypt</span> with appropriate flags set for our key.
-                            I set the server up to do this operation dynamically (it's already done it). If you refresh the page, you can generate new keys and encrypt this packet with those
-                            keys to get a new ciphertext. Please don't generate too many keys, because I don't have a cleaning mechanism for them! 
-                        </p>
-                        <p>
-                            The bolded solo number (0x39) is 57 in decimal. This is the time-to-live section of the IP header.
+                            This looks like a lot of hexadecimal, but there's some valuable information in there. The bolded solo number (0x39) is 57 in decimal. This is the time-to-live section of the IP header.
                             The bolded string of numbers is the source IP address. <strong>Fun activity</strong>: what website is this packet from?
                         </p>
-                        <button id="trigger-3">Next step</button>
+
+                        <p>
+                            OpenSSL will encrypt it for us, we can just run <span class="code">openssl rsautl -encrypt</span> with appropriate flags set for our key.
+                        </p>
+                        <button id="trigger-3">Encrypt it!</button>
                 </div>
             </li>
             <br>
             <li id="step3">
-                <p>Here's our encrypted text:</p>
-                <div id="ciphertext">
-        
-                </div>
+		    <p>Surprise! Our encrypted data is actually a big binary dump that we can't really render in ASCII. Take a look at an example file on the 
+		    GitHub <strong><a href="https://raw.githubusercontent.com/benjamnsmith/5248-final-project/master/ssl-example-packets/packet-encrypted.txt">[LINK]</a></strong> 
+		 to see what the encrypted header would look like. These are the bits that are actually being sent across the wire! When the receiver receives this,
+		they will decrypt it using their private key to obtain the header we see above, and then their machine will be able to parse the header. </p>
             </li>
         </ol>
     </div>
@@ -96,7 +95,5 @@ RSA EXAMPLE - SSL
         </table>
     </div>
 </div>
-
-
 
 {% endblock %}

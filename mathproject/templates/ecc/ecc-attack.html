@@ -29,8 +29,7 @@ ECDH ATTACK
         <p>
             Our friend the Discrete Log Problem that we know so well to be the difficulty of solving Diffie Hellman
             translates into ECC as well. We can add some new letters and call it the Elliptic Curve Discrete Logarithm Problem (ECDLP). 
-            That is, <strong>given a point $Q$ (which is a point on $E$, an elliptic curve, over $\mathbb{F}_q)$, can we find $I$ and $P$ such that $Q=IP$?</strong>
-            This is essentially the integer factorization problem, but over a new set of integers. 
+            That is, <strong>given points $P$ and $Q$ (which are point on $E$, an elliptic curve, over $\mathbb{F}_q)$, can we find $n$ such that $Q=nP$?</strong> 
         </p>
         <p>
             The best known algorithm to solve the ECDLP is Pollard's $p$-method. This is a general integer factorization algorithm that we
@@ -58,8 +57,11 @@ ECDH ATTACK
             (and outside the scope of my comprehension). The general running time of Pollard's method is approximately $\sqrt{\pi n/2}$, but this
             can be decreased up to $\frac{\sqrt{\pi n}}{2 \sqrt{m}}$, where $m$ is a power of 2 such that the map of points on the curves in $\mathbb{F}_2$ is 
             an endomorphism on $E(\mathbb{F}_{2^m})$. Like I said, this is a bit beyond my comprehension. However, this optimization of Pollard's method has been effectively used to 
-            solve real-world ECC challenges. 
+            solve real-world ECC problems. 
         </p>
+	<p>
+	    Why, you may ask, wouldn't we just use Shor's algorithm again? Great question. I wanted to highlight another integer factorization algorithm.
+	</p>
     </div>
     <div class="interactive box">
         <h3>Fun with Pollard</h3>
@@ -101,11 +103,15 @@ ECDH ATTACK
             I implemented the algorithm in Python, and we can test it out below. Input an (odd) number into the box below, and we will
             factor it using Pollard's $p$-method. 
         </p>
-        <form>
-            <label>Input a number with two prime factors:</label><br>
-            <input placeholder="12283" id="val"></input>
-            <button>Factor it!</button>
-        </form>
+        <div id="pollard_fun">
+            <form>
+                <label>Input a number with two prime factors:</label><br>
+                <input placeholder="12283" id="num" value="{{ request.form['num'] }}">
+                <button>Factor it!</button>
+            </form>
+            <div id="pollard_results"></div>
+        </div>
+        
     </div>
 </div>
 
