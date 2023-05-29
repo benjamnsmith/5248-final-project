@@ -4,6 +4,9 @@ Ben Smith smit9524@umn.edu
 
 ## To view
 
-The server is running at 151.106.108.136 on port 5000. [Here](http://151.106.108.136:5000) is a direct link to it. There is no HTTPS. 
+The server is no longer running.
 
-Flask backend, JS frontend. Mathjax for the Tex. 
+## Build
+The web app is built with the Flask framework in Python. It utilizes a JavaScript front-end and runs cryptographic methods on the [Wolfram Language Engine](https://writings.stephenwolfram.com/2019/05/launching-today-free-wolfram-engine-for-developers/). 
+
+
